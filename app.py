@@ -1,7 +1,9 @@
-from flask import Flask, request, jsonify, render_template
+import warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning, module="scapy")
 import random
 import socket
 import threading
+from flask import Flask, request, jsonify, render_template
 from scapy.all import IP, UDP, Raw, send
 
 app = Flask(__name__)
