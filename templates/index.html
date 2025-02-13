@@ -5,64 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <style>body {
-    background-color: #1a1a1a;
-    color: white;
-    font-family: 'Roboto', sans-serif;
-}
-
-.container {
-    margin: 20px;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-header .title {
-    font-size: 2rem;
-    font-weight: bold;
-}
-
-header .notification {
-    background-color: #ffcc00;
-    color: black;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-form {
-    background-color: #333;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-form input, form select, form textarea {
-    background-color: #444;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    width: 100%;
-    margin: 10px 0;
-    color: white;
-}
-
-form button {
-    background-color: #ffcc00;
-    border: none;
-    color: black;
-    padding: 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-}
-
-form button:hover {
-    background-color: #ffaa00;
-}
-</style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
@@ -70,48 +13,21 @@ form button:hover {
             <div class="title">Advanced Hub</div>
             <div class="notification">You are currently using the Free Network</div>
         </header>
-        <form action="#" method="post">
+        <form action="/attack" method="post">
             <label for="target">Target</label>
-            <input type="text" id="target" name="target" placeholder="https://whatever.com">
-            
-            <label for="method-group">Method Group</label>
-            <select id="method-group" name="method-group">
-                <option value="special-methods">SPECIAL METHODS</option>
-            </select>
+            <input type="text" id="target" name="target" placeholder="https://example.com" required>
 
-            <label for="attack-method">Attack Method</label>
-            <select id="attack-method" name="attack-method">
-                <option value="enterprise-https-custom">[ENTERPRISE] HTTPS-CUSTOM (Real Browsers)</option>
-            </select>
+            <label for="threads">Number of Threads</label>
+            <input type="number" id="threads" name="threads" value="100" min="1" max="500" required>
 
-            <label for="user-agent">User Agent (Optional)</label>
-            <input type="text" id="user-agent" name="user-agent" placeholder="Mozilla/5.0">
-
-            <label for="cookies">Cookies (Optional)</label>
-            <input type="text" id="cookies" name="cookies" placeholder="PHPSESSID=value;">
-
-            <label for="attack-time">Attack Time</label>
-            <input type="number" id="attack-time" name="attack-time" value="15">
-
-            <label for="attack-slots">Attack Slots</label>
-            <input type="number" id="attack-slots" name="attack-slots" value="1">
-
-            <label for="post-data">Post Data (Optional)</label>
-            <input type="text" id="post-data" name="post-data" placeholder="user=%RAND%&pass=%RAND%">
-
-            <label for="wait">Wait</label>
-            <input type="number" id="wait" name="wait" value="3">
-
-            <label for="request-url">Request URL (Optional)</label>
-            <input type="text" id="request-url" name="request-url" placeholder="https://example.com/login">
-
-            <label for="request-method">Request Method</label>
-            <select id="request-method" name="request-method">
-                <option value="get">GET</option>
-            </select>
-
-            <button type="submit">Deploy Attack</button>
+            <button type="submit">Start Attack</button>
         </form>
+
+        {% if message %}
+        <div class="message success">{{ message }}</div>
+        {% elif error %}
+        <div class="message error">{{ error }}</div>
+        {% endif %}
     </div>
 </body>
 </html>
