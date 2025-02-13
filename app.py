@@ -65,7 +65,7 @@ def index():
 @app.route('/attack', methods=['POST'])
 def attack():
     target = request.form.get('target', '').strip()  # Get target from form and strip whitespace
-    threads = request.form.get('threads', '100')
+    threads = request.form.get('threads', '1000')  # Default to 1000 threads for unlimited mode
 
     if not target:
         return render_template('index.html', message=None, error="Target is required!")
@@ -76,8 +76,8 @@ def attack():
 
     try:
         threads = int(threads)
-        if threads <= 0 or threads > 500:  # Limit the number of threads to a reasonable range
-            return render_template('index.html', message=None, error="Number of threads must be between 1 and 500!")
+        if threads <= 0:  # Set to a very large number or no limit (unlimited threads mode)
+            threads = 10000  # You can adjust this number if you want a maximum limit
     except ValueError:
         return render_template('index.html', message=None, error="Invalid number of threads!")
 
